@@ -1,6 +1,6 @@
 # 3D Virtual Camera Project
 
-This project demonstrates a 3D virtual camera system that allows you to interact with and transform 3D objects in a virtual space. Camera system is that the observer is always located at the origin point (0,0,0), and transformations are applied to objects in the opposite direction of the intended camera movement or rotation thus creting inlusion of movement. Project implentes nessecary transformations and matrix operation. 
+This project demonstrates a 3D virtual camera system that allows you to interact with and transform 3D objects in a virtual space. Camera system is that the observer is always located at the origin point (0,0,0), and transformations are applied to objects in the opposite direction of the intended camera movement or rotation thus creting inlusion of movement. Project implentes nessecary transformations and matrix operation. \
 ![Initial perspective](img/starting_view.png) 
 
 
@@ -47,7 +47,8 @@ After building the project, you can run the simulation by executing **./camer3D*
 
 The manual perspective projection matrix used to define the viewing frustum is defined as follows, given the field of view angle \(fov\), aspect ratio \(aspect\), and near and far clipping planes \(near\) and \(far\):
 
-\[
+```math
+
 \text{Perspective Matrix} = 
 \begin{bmatrix}
 \frac{1}{\tan\left(\frac{fov}{2}\right) \cdot aspect} & 0 & 0 & 0 \\
@@ -55,11 +56,12 @@ The manual perspective projection matrix used to define the viewing frustum is d
 0 & 0 & \frac{far + near}{near - far} & \frac{2 \cdot far \cdot near}{near - far} \\
 0 & 0 & -1 & 0
 \end{bmatrix}
-\]
+
+```
 
 This matrix helps transform 3D points into a 2D perspective projection.
 
-## Transformations
+## Transformations 
 ![Initial perspective](img/side_view.png) 
 ### Translations
 
@@ -67,69 +69,71 @@ Translations in this application involve shifting objects within the scene based
 
 - **Move Right/Left**:
   - Moving right (simulating camera moving left):
-    \[
-    \text{Translation Matrix (Right)} = 
+  
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & -0.05 \\
     0 & 1 & 0 & 0 \\
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
   - Moving left (simulating camera moving right):
-    \[
-    \text{Translation Matrix (Left)} = 
+  
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & 0.05 \\
     0 & 1 & 0 & 0 \\
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
 
 - **Move Up/Down**:
   - Moving up (simulating camera moving down):
-    \[
-    \text{Translation Matrix (Up)} = 
+  
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & 0 \\
     0 & 1 & 0 & -0.05 \\
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
+
   - Moving down (simulating camera moving up):
-    \[
-    \text{Translation Matrix (Down)} = 
+  
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & 0 \\
     0 & 1 & 0 & 0.05 \\
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
 
 - **Move Forward/Backward**:
   - Moving forward (simulating camera moving backward):
-    \[
-    \text{Translation Matrix (Forward)} = 
+  
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & 0 \\
     0 & 1 & 0 & 0 \\
     0 & 0 & 1 & 0.05 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
+
   - Moving backward (simulating camera moving forward):
-    \[
-    \text{Translation Matrix (Backward)} = 
+
+    ```math
     \begin{bmatrix}
     1 & 0 & 0 & 0 \\
     0 & 1 & 0 & 0 \\
     0 & 0 & 1 & -0.05 \\
     0 & 0 & 0 & 1 
     \end{bmatrix}
-    \]
+    ```
 
 ### Rotations
 
@@ -141,35 +145,37 @@ Rotations are performed using quaternions to avoid the gimbal lock problem and e
 
 Each rotation applies a quaternion transformation based on an axis-angle representation:
 
-\[
-q = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right) \cdot (ix + jy + kz)
-\]
-\[
+
+```math
+q = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right) \cdot (ix + jy + kz) 
+```
+Formula:
+
+```math
 \vec{v}' = q \cdot \vec{v} \cdot q^*
-\]
+```
 
 ### Scaling
 
 Scaling operations adjust the size of objects relative to a center point (typically the origin) to simulate zooming in and out:
 
 - **Zoom In/Out**: Adjusts the scale of all objects using a uniform scaling matrix:
-  \[
-  \text{Scaling Matrix} = 
+
+  ```math
   \begin{bmatrix}
   s & 0 & 0 & 0 \\
   0 & s & 0 & 0 \\
   0 & 0 & s & 0 \\
   0 & 0 & 0 & 1
   \end{bmatrix}
-  \]
-
+  ```
 ### Data Structures
 
 - **Matrix4x4**: Represents transformation matrices with 16 elements. Supports matrix-vector multiplication which applies the transformation to a 3D point:
-  \[
+  ```math
   \vec{v}' = \text{Matrix} \cdot \vec{v}
-  \]
-  Where \( \vec{v} \) is a vector in homogeneous coordinates.
+  ```
+  Where {v} is a vector in homogeneous coordinates.
 
 - **Quaternion**: Represents rotations in 3D space using four components (w, x, y, z). Quaternions are used for their computational efficiency and to avoid the issues of gimbal lock that can occur with Euler angles.
 
